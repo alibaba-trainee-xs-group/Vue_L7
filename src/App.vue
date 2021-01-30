@@ -1,17 +1,20 @@
 <template>
   <div id="app">
-    <HelloWorld msg="Hello Vue in CodeSandbox!" />
+    <Map msg="Hello Vue in CodeSandbox!" />
+    <Clock/>
   </div>
 </template>
 
 <script>
 
-import HelloWorld from "./components/HelloWorld";
+import Map from "./components/Map";
+import Clock from "./components/Clock"
 
 export default {
   name: "App",
   components: {
-    HelloWorld
+    Map,
+    Clock
   }
 };
 </script>
