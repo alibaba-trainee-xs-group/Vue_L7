@@ -4,60 +4,76 @@
   </div>
 </template>
 <script>
-import { Scene, PointLayer } from '@antv/l7';
-import { GaodeMap } from '@antv/l7-maps';
+import { Scene, LineLayer, Popup } from '@antv/l7';
+import { Mapbox } from '@antv/l7-maps';
 export default {
   data() {
     return {};
   },
   mounted() {
-    const scene = new Scene({
+
+const scene = new Scene({
   id: 'map',
-  map: new GaodeMap({
-    pitch: 0,
-    style: 'light',
-    center: [ 121.435159, 31.256971 ],
-    zoom: 14.89,
-    minZoom: 10
+  map: new Mapbox({
+    center: [ 103.83735604457024, 1.360253881403068 ],
+    pitch: 4.00000000000001,
+    zoom: 11,
+    rotation: 19.313180925794313,
+    style: 'dark'
   })
 });
-fetch(
-  'https://gw.alipayobjects.com/os/basement_prod/893d1d5f-11d9-45f3-8322-ee9140d288ae.json'
-)
-  .then(res => res.json())
-  .then(data => {
-    const pointLayer = new PointLayer({})
-      .source(data, {
-        parser: {
-          type: 'json',
-          x: 'longitude',
-          y: 'latitude'
-        }
-      })
-      .shape('name', [
-        'circle',
-        'triangle',
-        'square',
-        'pentagon',
-        'hexagon',
-        'octogon',
-        'hexagram',
-        'rhombus',
-        'vesica'
-      ])
-      .size('unit_price', [ 10, 25 ])
-      .color('name', [ '#5B8FF9', '#5CCEA1', '#5D7092', '#F6BD16', '#E86452' ])
-      .style({
-        opacity: 0.3,
-        strokeWidth: 2
+scene.on('loaded', () => {
+  fetch(
+    'https://gw.alipayobjects.com/os/basement_prod/ee07641d-5490-4768-9826-25862e8019e1.json'
+  )
+    .then(res => res.json())
+    .then(data => {
+      const layer = new LineLayer({})
+        .source(data, {
+          parser: {
+            type: 'json',
+            coordinates: 'path'
+          }
+        })
+        .size('level', level => {
+          return [ 0.8, level * 1 ];
+        })
+        .shape('line')
+        .active(true)
+        .color(
+          'level',
+          [
+            '#0A3663',
+            '#1558AC',
+            '#3771D9',
+            '#4D89E5',
+            '#64A5D3',
+            '#72BED6',
+            '#83CED6',
+            '#A6E1E0',
+            '#B8EFE2',
+            '#D7F9F0'
+          ]
+            .reverse()
+            .slice(0, 8)
+        );
+      layer.on('mousemove', e => {
+        const popup = new Popup({
+          offsets: [ 0, 0 ],
+          closeButton: false
+        })
+          .setLnglat(e.lngLat)
+          .setHTML(`<span>车次: ${e.feature.number}</span>`);
+        scene.addPopup(popup);
       });
-
-    scene.addLayer(pointLayer);
-  });
+      scene.addLayer(layer);
+    });
+});
 
   }
 };
 </script>
+
 <style>
 ::-webkit-scrollbar {
   display: none;
