@@ -17,7 +17,7 @@ export default {
     map: new GaodeMap({
       center: [ 107.77791556935472, 35.443286920228644 ],
       pitch: 4.00000000000001,
-      zoom: 5,
+      zoom: 4.7,
       rotation: 10,
       style: 'dark'
     })
