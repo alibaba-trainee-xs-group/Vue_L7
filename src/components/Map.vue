@@ -17,7 +17,16 @@ export default {
     map: new GaodeMap({
       center: [ 107.77791556935472, 35.443286920228644 ],
       pitch: 4.00000000000001,
+<<<<<<< HEAD
       zoom: 6,
+=======
+<<<<<<<< HEAD:src/components/Map.vue
+      zoom: 4.7,
+      rotation: 10,
+========
+      zoom: 6,
+>>>>>>>> 4df172c3326e67853b502b26554175707eeae34c:src/components/HelloWorld.vue
+>>>>>>> 4df172c3326e67853b502b26554175707eeae34c
       style: 'dark'
     })
     });
@@ -62,8 +71,12 @@ export default {
             closeButton: false
           })
             .setLnglat(e.lngLat)
+<<<<<<< HEAD
             .setHTML(`<span>车次: ${e.feature.number}</span>
                     from {e.feature.`);
+=======
+            .setHTML(`<span>车次: ${e.feature.number}</span>`);
+>>>>>>> 4df172c3326e67853b502b26554175707eeae34c
           scene.addPopup(popup);
         });
         scene.addLayer(layer);
