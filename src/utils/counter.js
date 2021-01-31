@@ -8,12 +8,15 @@ const day2seconds = 86400;
  * @param {object} opt - Optional configuration settings
  **/
 export class Counter {
-  constructor(el = "counter", opt = {}) {
+  constructor(speed = 1, el = "counter", opt = {}) {
     // If opt is specified, but not el
     if (typeof el === "object") {
       opt = el;
       el = "counter";
     }
+
+    // speed
+    this.speed = speed;
 
     // Time at instantiation in seconds
     this.now = this.startAt = this._getTime();
@@ -53,6 +56,10 @@ export class Counter {
     // Set options
     this._setOptions();
 
+    // initialize
+    this._init();
+
+    // eslint-disable-next-line
     console.log(`FlipDown (Theme: ${this.opts.theme})`);
   }
 
@@ -60,11 +67,14 @@ export class Counter {
    * @name start
    * @description Start the countdown
    **/
-  start() {
-    // initialize
-    this._init();
+  reset() {
+    // reset startTime
+    this.startAt = this._getTime();
 
     // Set up the countdown interval
+    if (this.countdown) {
+      clearInterval(this.countdown);
+    }
     this.countdown = setInterval(this._tick.bind(this), 1000);
 
     // Chainable
@@ -101,8 +111,8 @@ export class Counter {
    * @param {object} opt - Optional configuration settings
    **/
   _parseOptions(opt) {
-    let headings = ["Days", "Hours", "Minutes", "Seconds"];
-    if (opt.headings && opt.headings.length === 4) {
+    let headings = ["Hours", "Minutes", "Seconds"];
+    if (opt.headings && opt.headings.length === 3) {
       headings = opt.headings;
     }
     return {
@@ -139,7 +149,7 @@ export class Counter {
         otherRotors.push(this.rotors[count]);
         count++;
       }
-      this.element.appendChild(this._createRotorGroup(otherRotors, i + 1));
+      this.element.appendChild(this._createRotorGroup(otherRotors, i));
     }
 
     // Store and convert rotor nodelists to arrays
@@ -217,7 +227,7 @@ export class Counter {
     this.now = this._getTime();
 
     // Between now and epoch
-    var diff = this.now - this.startAt;
+    var diff = (this.now - this.startAt) * this.speed;
 
     // Hours remaining
     this.clockValues.h = Math.floor(diff / 3600);

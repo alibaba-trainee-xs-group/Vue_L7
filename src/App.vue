@@ -9,10 +9,11 @@
 
 import Map from "./components/Map";
 import Clock from "./components/Clock"
-
+//import Prompt from "./components/Prompt"
 export default {
   name: "App",
   components: {
+    //Prompt,
     Map,
     Clock
   }
